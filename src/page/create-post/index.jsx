@@ -1,9 +1,8 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import "../signup/signup.css" ;
+import "../signup/signup.css";
 import { toast } from "react-toastify";
-
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");
@@ -18,31 +17,29 @@ const CreatePost = () => {
   const id_user = user.userId;
   const navigate = useNavigate();
 
-
   useEffect(() => {
     let data;
 
     let config = {
-        method: 'get',
-        maxBodyLength: Infinity,
-        url: 'http://localhost:3000/api/topic/readTopic',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        data: data
+      method: "get",
+      maxBodyLength: Infinity,
+      url: "http://localhost:3000/api/topic/readTopic",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      data: data,
     };
 
-    axios.request(config)
-        .then((response) => {
-            setTopics(response.data.topics);
-            //console.log(listCategory);
-
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-
-}, [topics])
+    axios
+      .request(config)
+      .then((response) => {
+        setTopics(response.data.topics);
+        //console.log(listCategory);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
 
   const validateForm = () => {
     const errors = {};
@@ -62,50 +59,49 @@ const CreatePost = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-let creation = new Date()
- creation = creation.toISOString().slice(0, 19).replace('T', ' ');
+    let creation = new Date();
+    creation = creation.toISOString().slice(0, 19).replace("T", " ");
     if (validateForm()) {
       let data = {
-       title,
-       content,
-       creation,
-       id_user,
-        id_topic
-      }
+        title,
+        content,
+        creation,
+        id_user,
+        id_topic,
+      };
 
       data = JSON.stringify(data);
-    console.log(data);
-    let config = {
-      method: "post",
-      maxBodyLength: Infinity,
-      url: "http://localhost:3000/api/post/createPost",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      data: data,
-    };
+      console.log(data);
+      let config = {
+        method: "post",
+        maxBodyLength: Infinity,
+        url: "http://localhost:3000/api/post/createPost",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: data,
+      };
 
-    axios
-    .request(config)
-    .then((response) => {
-      console.log(response);
-      if (response.status === 200) {
-        console.log("Response succeeded!");
-        setTitle("");
-        setContent("");
-        setTopic("");
-        toast.success("Post créé");
-        setTimeout(() => {
-          navigate("/");
-        }, 3000);
-      }
-    })
-    .catch((error) => {
-      const errorMessage =
-        error.response?.data?.message || "An error occurred";
-      toast.error(errorMessage);
-    });
-    
+      axios
+        .request(config)
+        .then((response) => {
+          console.log(response);
+          if (response.status === 200) {
+            console.log("Response succeeded!");
+            setTitle("");
+            setContent("");
+            setTopic("");
+            toast.success("Post créé");
+            setTimeout(() => {
+              navigate("/");
+            }, 3000);
+          }
+        })
+        .catch((error) => {
+          const errorMessage =
+            error.response?.data?.message || "An error occurred";
+          toast.error(errorMessage);
+        });
     }
   };
 
@@ -125,40 +121,44 @@ let creation = new Date()
         {errors.title && <p className="error-message">{errors.title}</p>}
 
         <div className="form-group">
-        <textarea
-                        aria-label="Description du post"
-                        className="inputTextarea"
-                        type="text"
-                        name="content"
-                        placeholder="Contenu du post"
-                        onChange={(e) => {
-                            setContent(e.target.value);
-                        }}
-                        required="required"
-                    />
+          <textarea
+            aria-label="Description du post"
+            className="inputTextarea"
+            type="text"
+            name="content"
+            placeholder="Contenu du post"
+            onChange={(e) => {
+              setContent(e.target.value);
+            }}
+            required="required"
+          />
         </div>
         {errors.content && <p className="error-message">{errors.content}</p>}
-        <label className="inputLabel" htmlFor="topicSelect">Sélectionner une catégorie </label>
-                    <select
-                        aria-label="Sélectionner une catégorie "
-                        className="inputSelect"
-                        id="topicSelect"
-                        onChange={(e) => {
-                            setTopic(e.target.value);
-                        }}>
-                        {topics && topics.length > 0 ? (
-                            <> <option value="0">Sélectionner une catégorie</option>
-                                {topics.map(topic => (
-                                    <option key={topic.id} value={topic.id}>
-                                        {topic.title}
-                                    </option>
-                                ))}
-                            </>
-                        ) : (
-                            <option value="">Aucun topic disponible</option>
-                            )}
-                        </select>
-
+        <label className="inputLabel" htmlFor="topicSelect">
+          Sélectionner une catégorie{" "}
+        </label>
+        <select
+          aria-label="Sélectionner une catégorie "
+          className="inputSelect"
+          id="topicSelect"
+          onChange={(e) => {
+            setTopic(e.target.value);
+          }}
+        >
+          {topics && topics.length > 0 ? (
+            <>
+              {" "}
+              <option value="0">Sélectionner une catégorie</option>
+              {topics.map((topic) => (
+                <option key={topic.id} value={topic.title}>
+                  {topic.title}
+                </option>
+              ))}
+            </>
+          ) : (
+            <option value="">Aucun topic disponible</option>
+          )}
+        </select>
 
         <button className="btn-to-login" type="submit">
           Créer le post

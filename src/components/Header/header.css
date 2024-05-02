@@ -2,6 +2,7 @@
     display: flex;
     margin: 2rem 0;
     justify-content: space-between;
+    background-color: antiquewhite;
   }
   .row{ 
     width: 100%;

@@ -12,8 +12,8 @@ const Navigation = () => {
     const logout = () => {
       userService.logout();
   };
-
   const [user, setUser] = useState(null);
+
 
   useEffect(() => {
     // Abonnement aux mises à jour de l'utilisateur à l'aide du service userService

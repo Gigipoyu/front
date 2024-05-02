@@ -7,6 +7,8 @@ import Footer from './components/Footer';
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import CreatePost from "./page/create-post";
+import Post from "./page/post";
+
 
 function App() {
   return (
@@ -18,6 +20,7 @@ function App() {
           <Route path="/signup" element={<Signup />}/>
           <Route path="/signin" element={<Signin />}/>
           <Route path="/createpost" element={<CreatePost />}/>
+          <Route path="/post/:post_id" element={<Post />}/>
           <Route path="*" element={<p>Error 404</p>} />
       </Routes>
       <Footer />

@@ -16,7 +16,7 @@ const Card = ({item}) => {
     <div className="card-footer ">
     <p>  {item.description} </p>
     </div>
-  </div>
+    </div>
 
   )
 }
