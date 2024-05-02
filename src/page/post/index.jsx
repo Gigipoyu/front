@@ -19,38 +19,68 @@ const Post = () => {
 
     }, []);
     useEffect(() => {
-        axios
-            .get(
-                `http://localhost:3000/api/post/readOnePost?id=${post_id}`
-            )
-            .then((response) => {
-                setPost(response.data.post);
-                console.log(response);
-            })
-            .get(
-                `http://localhost:3000/api/comment/readComment?id=${post_id}`
-            )
-            .then((response) => {
-                setComments(response.data.comments);
-                console.log(response);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
+          
+          let config = {
+            method: 'get',
+            maxBodyLength: Infinity,
+            url: `http://localhost:3000/api/post/readOnePost?id=${post_id}`,
+            headers: { 
+              'Content-Type': 'application/json'
+            },
+
+          };
+          
+          axios.request(config)
+          .then((response) => {
+            setPost(response.data.post)
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     }, []);
 
+    useEffect(() => {
+          
+        let config = {
+          method: 'get',
+          maxBodyLength: Infinity,
+          url: `http://localhost:3000/api/comment/readComment?id=${post_id}`,
+          headers: { 
+            'Content-Type': 'application/json'
+          },
+
+        };
+        
+        axios.request(config)
+        .then((response) => {
+          setComments(response.data.comments)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+  }, []);
+
 return (
-    <>
+    <div>
     <div>Post</div>
-    <PostCard    post = {post} />
+
+      {userId? <Link to={"/createcomment"}
+    className="submitButton"
+    aria-label="Créer comment"
+  >
+    Créer comment
+  </Link>: null}
+
+    {post? <PostCard post = {post}/> : null }
+
     <br />
-    {comments && comments.map((item) =>(
-        <CommentCard 
-        key = {item.id}
-        comment = {item}
-        /> 
-    ))}
-    </>
+
+    {comments && comments.map((comment) => (
+        <CommentCard
+        key = {comment.id}
+        comment = {comment}/>
+      ))}
+    </div>
   )
 }
 
